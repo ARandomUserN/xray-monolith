@@ -1,9 +1,21 @@
-#include "scope_common.h"
+/*
+	=====================================================================
+	Addon      : Shader 3D Scopes
+	Link       : https://www.moddb.com/mods/stalker-anomaly/addons/shader-3d-scopes
+	Authors    : LVutner, party_50
 
-// This file sets the depth of the lens just prior to dof phase
-//   - Setting it to a far value will result in a clear image
-//   - Setting it to a close value will result in blur (useful for things like NVG)
+	All credit to original authors.
+	=====================================================================
+*/
+
+#include "scope_3dss_common.h"
 
 float scope_custom_depth(float4 hpos) {
-    return 100.0;
+    bool nvg_blur = SETTING(SETTINGS, ST_NVG_BLUR) && floor(shader_param_8.x) != 0 || m_hud_params.x == 0;
+    
+    float NO_BLUR = 100.0;
+
+    return nvg_blur
+        ? hpos.z
+        : NO_BLUR;
 }
