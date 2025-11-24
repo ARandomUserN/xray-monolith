@@ -170,19 +170,19 @@ struct CLoader
 	{
 		if (p.can_clear())
 			data.clear();
-		u32 prev_count = data.size();
-		data.resize(prev_count + stream.r_u32());
+		u64 prev_count = data.size();
+		data.resize(prev_count + stream.r_u64());
 		xr_vector<bool>::iterator I = data.begin() + prev_count;
 		xr_vector<bool>::iterator E = data.end();
-		u32 mask = 0;
-		for (int j = 32; I != E; ++I, ++j)
+		u64 mask = 0;
+		for (int j = 64; I != E; ++I, ++j)
 		{
-			if (j >= 32)
+			if (j >= 64)
 			{
-				mask = stream.r_u32();
+				mask = stream.r_u64();
 				j = 0;
 			}
-			*I = !!(mask & (u32(1) << j));
+			*I = !!(mask & (u64(1) << j));
 		}
 	};
 
@@ -191,8 +191,8 @@ struct CLoader
 	{
 		if (p.can_clear())
 			data.clear();
-		u32 count = stream.r_u32();
-		for (u32 i = 0; i < count; ++i)
+		u64 count = stream.r_u64();
+		for (u64 i = 0; i < count; ++i)
 		{
 			svector<T, size>::value_type temp;
 			CLoader<M, P>::load_data(temp, stream, p);
@@ -210,8 +210,8 @@ struct CLoader
 				data.pop();
 		}
 		std::queue<T1, T2> temp;
-		u32 count = stream.r_u32();
-		for (u32 i = 0; i < count; ++i)
+		u64 count = stream.r_u64();
+		for (u64 i = 0; i < count; ++i)
 		{
 			std::queue<T1, T2>::value_type t;
 			CLoader<M, P>::load_data(t, stream, p);
@@ -231,8 +231,8 @@ struct CLoader
 				data.pop();
 		}
 		T1<T2, T3> temp;
-		u32 count = stream.r_u32();
-		for (u32 i = 0; i < count; ++i)
+		u64 count = stream.r_u64();
+		for (u64 i = 0; i < count; ++i)
 		{
 			T1<T2, T3>::value_type t;
 			CLoader<M, P>::load_data(t, stream, p);
@@ -252,8 +252,8 @@ struct CLoader
 				data.pop();
 		}
 		T1<T2, T3, T4> temp;
-		u32 count = stream.r_u32();
-		for (u32 i = 0; i < count; ++i)
+		u64 count = stream.r_u64();
+		for (u64 i = 0; i < count; ++i)
 		{
 			T1<T2, T3, T4>::value_type t;
 			CLoader<M, P>::load_data(t, stream, p);

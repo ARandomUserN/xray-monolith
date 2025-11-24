@@ -202,7 +202,7 @@ CObject::CObject() :
 {
 	// Transform
 	Props.storage = 0;
-	setID((u16)-1);
+	setID((u32)-1);
 
 	Parent = NULL;
 

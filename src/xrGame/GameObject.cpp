@@ -482,8 +482,8 @@ BOOL CGameObject::net_Spawn(CSE_Abstract* DC)
 
 void CGameObject::net_Save(NET_Packet& net_packet)
 {
-	u32 position;
-	net_packet.w_chunk_open16(position);
+	u64 position;
+	net_packet.w_chunk_open32(position);
 	save(net_packet);
 
 	// Script Binder Save ---------------------------------------
@@ -506,7 +506,7 @@ void CGameObject::net_Save(NET_Packet& net_packet)
 
 	// ----------------------------------------------------------
 
-	net_packet.w_chunk_close16(position);
+	net_packet.w_chunk_close32(position);
 }
 
 void CGameObject::net_Load(IReader& ireader)

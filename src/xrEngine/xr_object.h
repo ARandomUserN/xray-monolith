@@ -43,19 +43,20 @@ public:
 	{
 		struct
 		{
-			u32 net_ID : 16;
-			u32 bActiveCounter : 8;
-			u32 bEnabled : 1;
-			u32 bVisible : 1;
-			u32 bDestroy : 1;
-			u32 net_Local : 1;
-			u32 net_Ready : 1;
-			u32 net_SV_Update : 1;
-			u32 crow : 1;
-			u32 bPreDestroy : 1;
+			u64 net_ID : 32;
+			u64 bActiveCounter : 8;
+			u64 bEnabled : 1;
+			u64 bVisible : 1;
+			u64 bDestroy : 1;
+			u64 net_Local : 1;
+			u64 net_Ready : 1;
+			u64 net_SV_Update : 1;
+			u64 crow : 1;
+			u64 bPreDestroy : 1;
+			u64 padding : 16;
 		};
 
-		u32 storage;
+		u64 storage;
 	};
 
 private:
@@ -95,8 +96,8 @@ public:
 	// Network
 	ICF BOOL Local() const { return Props.net_Local; }
 	ICF BOOL Remote() const { return !Props.net_Local; }
-	ICF u16 ID() const { return Props.net_ID; }
-	ICF void setID(u16 _ID) { Props.net_ID = _ID; }
+	ICF u32 ID() const { return Props.net_ID; }
+	ICF void setID(u32 _ID) { Props.net_ID = _ID; }
 	virtual BOOL Ready() { return Props.net_Ready; }
 	BOOL GetTmpPreDestroy() const { return Props.bPreDestroy; }
 	void SetTmpPreDestroy(BOOL b) { Props.bPreDestroy = b; }

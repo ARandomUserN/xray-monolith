@@ -193,8 +193,8 @@ void CLevel::ClientSend()
 				P.w_begin(M_CL_UPDATE);
 
 
-				P.w_u16(u16(pObj->ID()));
-				P.w_u32(0); //reserved place for client's ping
+				P.w_u32(u32(pObj->ID()));
+				P.w_u64(0); //reserved place for client's ping
 
 				pObj->net_Export(P);
 
@@ -233,10 +233,10 @@ void CLevel::ClientSend()
 	}
 }
 
-u32 CLevel::Objects_net_Save(NET_Packet* _Packet, u32 start, u32 max_object_size)
+u32 CLevel::Objects_net_Save(NET_Packet* _Packet, u64 start, u64 max_object_size)
 {
 	NET_Packet& Packet = *_Packet;
-	u32 position;
+	u64 position;
 	for (; start < Objects.o_count(); start++)
 	{
 		CObject* _P = Objects.o_get_by_iterator(start);
@@ -244,8 +244,8 @@ u32 CLevel::Objects_net_Save(NET_Packet* _Packet, u32 start, u32 max_object_size
 		//		Msg			("save:iterating:%d:%s, size[%d]",P->ID(),*P->cName(), Packet.w_tell() );
 		if (P && !P->getDestroy() && P->net_SaveRelevant())
 		{
-			Packet.w_u16(u16(P->ID()));
-			Packet.w_chunk_open16(position);
+			Packet.w_u32(u32(P->ID()));
+			Packet.w_chunk_open32(position);
 			//			Msg						("save:saving:%d:%s",P->ID(),*P->cName());
 			P->net_Save(Packet);
 #ifdef DEBUG
@@ -256,7 +256,7 @@ u32 CLevel::Objects_net_Save(NET_Packet* _Packet, u32 start, u32 max_object_size
 					*P->cName(), P->ID(), size, Packet.w_tell(), position);
 			}
 #endif
-			Packet.w_chunk_close16(position);
+			Packet.w_chunk_close32(position);
 			//			if (0==(--count))		
 			//				break;
 			if (max_object_size >= (NET_PacketSizeLimit - Packet.w_tell()))
