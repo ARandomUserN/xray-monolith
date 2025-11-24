@@ -266,18 +266,18 @@ public:
 		INI_ASSERT(w_chunk_close8)
 	}
 
-	IC void w_chunk_open16(u32& position)
+	IC void w_chunk_open32(u64& position)
 	{
 		position = w_tell();
-		w_u16(0);
+		w_u32(0);
 		INI_ASSERT(w_chunk_open16)
 	}
 
-	IC void w_chunk_close16(u32 position)
+	IC void w_chunk_close32(u64 position)
 	{
-		u32 size = u32(w_tell() - position) - sizeof(u16);
-		VERIFY(size < 65536);
-		u16 _size = (u16)size;
+		u64 size = u64(w_tell() - position) - sizeof(u32);
+		VERIFY(size < 0xffffffff);
+		u32 _size = (u32)size;
 		w_seek(position, &_size, sizeof(_size));
 		INI_ASSERT(w_chunk_close16)
 	}

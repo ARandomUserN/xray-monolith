@@ -55,7 +55,7 @@ struct CSaver
 		template <typename T>
 		IC static void save_data(const T& data, M& stream, const P& p)
 		{
-			stream.w_u32((u32)data.size());
+			stream.w_u64((u64)data.size());
 			T::const_iterator I = data.begin();
 			T::const_iterator E = data.end();
 			for (; I != E; ++I)
@@ -111,31 +111,31 @@ struct CSaver
 
 	IC static void save_data(const xr_vector<bool>& data, M& stream, const P& p)
 	{
-		stream.w_u32((u32)data.size());
+		stream.w_u64((u64)data.size());
 		xr_vector<bool>::const_iterator I = data.begin();
 		xr_vector<bool>::const_iterator E = data.end();
-		u32 mask = 0;
+		u64 mask = 0;
 		if (I != E)
 		{
 			for (int j = 0; I != E; ++I, ++j)
 			{
-				if (j >= 32)
+				if (j >= 64)
 				{
-					stream.w_u32(mask);
+					stream.w_u64(mask);
 					mask = 0;
 					j = 0;
 				}
 				if (*I)
-					mask |= u32(1) << j;
+					mask |= u64(1) << j;
 			}
-			stream.w_u32(mask);
+			stream.w_u64(mask);
 		}
 	};
 
 	template <typename T, int size>
 	IC static void save_data(const svector<T, size>& data, M& stream, const P& p)
 	{
-		stream.w_u32((u32)data.size());
+		stream.w_u64((u64)data.size());
 		svector<T, size>::const_iterator I = data.begin();
 		svector<T, size>::const_iterator E = data.end();
 		for (; I != E; ++I)
@@ -147,7 +147,7 @@ struct CSaver
 	IC static void save_data(const std::queue<T1, T2>& data, M& stream, const P& p)
 	{
 		std::queue<T1, T2> temp = data;
-		stream.w_u32((u32)data.size());
+		stream.w_u64((u64)data.size());
 		for (; !temp.empty(); temp.pop())
 			if (p(temp, temp.front()))
 				CSaver<M, P>::save_data(temp.front(), stream, p);
@@ -157,7 +157,7 @@ struct CSaver
 	IC static void save_data(const T1<T2, T3>& data, M& stream, const P& p, bool)
 	{
 		T1<T2, T3> temp = data;
-		stream.w_u32((u32)data.size());
+		stream.w_u64((u64)data.size());
 		for (; !temp.empty(); temp.pop())
 			if (p(temp, temp.top()))
 				CSaver<M, P>::save_data(temp.top(), stream, p);
@@ -167,7 +167,7 @@ struct CSaver
 	IC static void save_data(const T1<T2, T3, T4>& data, M& stream, const P& p, bool)
 	{
 		T1<T2, T3, T4> temp = data;
-		stream.w_u32((u32)data.size());
+		stream.w_u64((u64)data.size());
 		for (; !temp.empty(); temp.pop())
 			if (p(temp, temp.top()))
 				CSaver<M, P>::save_data(temp.top(), stream, p);

@@ -486,7 +486,7 @@ public:
 
 	CScriptGameObject* GetObjectByName(LPCSTR caObjectName) const;
 	CScriptGameObject* GetObjectByIndex(int iIndex) const;
-	CScriptGameObject * GetObjectById(u16 id) const;
+	CScriptGameObject* GetObjectById(u32 id) const;
 
 
 	// Callbacks			
